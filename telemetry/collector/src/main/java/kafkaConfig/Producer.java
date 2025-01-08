@@ -17,10 +17,17 @@ public class Producer {
 
     public <T extends SpecificRecordBase> void send(String topic, String key, T event) {
 
-        ProducerRecord<String, SpecificRecordBase> record =
-                new ProducerRecord<>(topic, key, event);
-        log.info("Отправка события в топик: {} с ключом: {} Событие: {}",
-                topic, key, event);
-        kafkaProducer.send(record);
+        try {
+            ProducerRecord<String, SpecificRecordBase> record =
+                    new ProducerRecord<>(topic, key, event);
+            log.info("Отправка события в топик: {} с ключом: {} Событие: {}",
+                    topic, key, event);
+            kafkaProducer.send(record);
+            kafkaProducer.flush();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        } finally {
+            kafkaProducer.close();
+        }
     }
 }
