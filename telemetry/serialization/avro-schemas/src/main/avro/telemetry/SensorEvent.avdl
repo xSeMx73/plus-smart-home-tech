@@ -21,14 +21,14 @@ protocol SensorEventProtocol {
 	record TemperatureSensorAvro {
 		string id;
 		string hubId;
-		timestamp_ms timestamp;
+		long timestamp;
 		int temperature_c;
 		int temperature_f;
 	}
 	record SensorEventAvro {
 		string id;
 		string hubId;
-		timestamp_ms timestamp;
+		long timestamp;
 		union{
 			ClimateSensorAvro,
 			LightSensorAvro,
