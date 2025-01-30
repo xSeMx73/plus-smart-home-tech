@@ -2,23 +2,25 @@ package service.handler;
 
 import kafkaConfig.Config;
 import kafkaConfig.Producer;
-import hub.HubEvent;
-import lombok.RequiredArgsConstructor;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.avro.specific.SpecificRecordBase;
-import org.springframework.stereotype.Component;
+import ru.yandex.practicum.grpc.telemetry.event.HubEventProto;
 
-@Component
-@RequiredArgsConstructor
+@Slf4j
+@AllArgsConstructor
 public abstract class BaseHubHandler<T extends SpecificRecordBase> implements HubHandler {
 
     private final Config config;
     private final Producer producer;
     private static final String HUB_TOPIC = "telemetry.hubs.v1";
 
-    protected abstract T mapToAvro(HubEvent event);
+    protected abstract T mapToAvro(HubEventProto event);
 
-    public void handle(HubEvent event) {
-        T avroEvent = mapToAvro(event);
-        producer.send(HUB_TOPIC, event.getHubId(), avroEvent);
+    @Override
+    public void handle(HubEventProto event) {
+        T protoEvent = mapToAvro(event);
+        log.info("Отправка события {} в топик {}", getMessageType(), HUB_TOPIC);
+        producer.send(HUB_TOPIC, event.getHubId(), protoEvent);
     }
 }
