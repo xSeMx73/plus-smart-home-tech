@@ -2,10 +2,8 @@ package service.hub;
 
 import kafkaConfig.Config;
 import kafkaConfig.Producer;
-import hub.DeviceRemovedEvent;
-import hub.HubEvent;
-import hub.HubEventType;
 import org.springframework.stereotype.Service;
+import ru.yandex.practicum.grpc.telemetry.event.HubEventProto;
 import ru.yandex.practicum.kafka.telemetry.event.DeviceRemovedEventAvro;
 import service.handler.BaseHubHandler;
 
@@ -16,14 +14,14 @@ public class DeviceRemovedEventHandler extends BaseHubHandler<DeviceRemovedEvent
     }
 
     @Override
-    protected DeviceRemovedEventAvro mapToAvro(HubEvent event) {
-        var deviceRemovedEvent = (DeviceRemovedEvent) event;
+    protected DeviceRemovedEventAvro mapToAvro(HubEventProto event) {
+        var deviceRemovedEvent = event.getDeviceRemoved();
         return new DeviceRemovedEventAvro(deviceRemovedEvent.getId());
     }
 
     @Override
-    public HubEventType getMessageType() {
-        return HubEventType.DEVICE_REMOVED;
+    public HubEventProto.PayloadCase getMessageType() {
+        return HubEventProto.PayloadCase.DEVICE_REMOVED;
     }
 
 }
