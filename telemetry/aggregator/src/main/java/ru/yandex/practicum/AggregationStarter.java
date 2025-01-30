@@ -9,6 +9,7 @@ import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.clients.producer.ProducerRecord;
+import org.apache.kafka.common.errors.WakeupException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ru.yandex.practicum.configuration.Kafka;
@@ -48,7 +49,7 @@ public class AggregationStarter {
         try {
             consumer.subscribe(Collections.singletonList(telemetrySensors));
             log.info("подписка на топик : {}", telemetrySensors);
-
+            Runtime.getRuntime().addShutdownHook(new Thread(consumer::wakeup));
             while (true) {
                 ConsumerRecords<String, SensorEventAvro> records = consumer.poll(Duration.ofMillis(100));
 
@@ -77,6 +78,8 @@ public class AggregationStarter {
                     log.error("ошибка в commitSync", e);
                 }
             }
+        } catch (WakeupException ignored) {
+
         } catch (Exception e) {
             log.error("ошибка ", e);
         } finally {
@@ -89,8 +92,6 @@ public class AggregationStarter {
             }
         }
     }
-
-
 
     public Optional<SensorsSnapshotAvro> updateState(SensorEventAvro event) {
         SensorsSnapshotAvro snapshot = snapshots.getOrDefault(event.getHubId(),
