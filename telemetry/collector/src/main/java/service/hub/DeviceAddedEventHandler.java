@@ -2,12 +2,9 @@ package service.hub;
 
 import kafkaConfig.Config;
 import kafkaConfig.Producer;
-import hub.DeviceAddedEvent;
-import hub.HubEvent;
-import hub.HubEventType;
-import ru.yandex.practicum.kafka.telemetry.event.DeviceAddedEventAvro;
 import org.springframework.stereotype.Service;
-
+import ru.yandex.practicum.grpc.telemetry.event.HubEventProto;
+import ru.yandex.practicum.kafka.telemetry.event.DeviceAddedEventAvro;
 import ru.yandex.practicum.kafka.telemetry.event.DeviceTypeAvro;
 import service.handler.BaseHubHandler;
 
@@ -20,17 +17,17 @@ public class DeviceAddedEventHandler extends BaseHubHandler<DeviceAddedEventAvro
 
 
     @Override
-    protected DeviceAddedEventAvro mapToAvro(HubEvent event) {
-        var deviceAddedEvent = (DeviceAddedEvent) event;
+    protected DeviceAddedEventAvro mapToAvro(HubEventProto event) {
+        var deviceAddedEvent = event.getDeviceAdded();
 
         return new DeviceAddedEventAvro(
                 deviceAddedEvent.getId(),
-                DeviceTypeAvro.valueOf(deviceAddedEvent.getDeviceType().name())
+                DeviceTypeAvro.valueOf(deviceAddedEvent.getType().name())
         );
     }
 
     @Override
-    public HubEventType getMessageType() {
-        return HubEventType.DEVICE_ADDED;
+    public HubEventProto.PayloadCase getMessageType() {
+        return HubEventProto.PayloadCase.DEVICE_ADDED;
     }
 }
