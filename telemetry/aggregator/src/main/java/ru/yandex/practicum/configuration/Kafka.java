@@ -10,7 +10,7 @@ import java.util.Map;
 
 
 @Configuration
-@ConfigurationProperties("kafka")
+@ConfigurationProperties("aggregator.kafka")
 @Data
 public class Kafka {
     private ProducerConfig producer;
