@@ -6,12 +6,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import ru.yandex.practicum.model.Product;
-import ru.yandex.practicum.shoppingStore.enums.ProductCategory;
+import ru.yandex.practicum.shoppingStore.dto.ProductDto;
 
 import java.util.UUID;
 
 
 public interface ProductRepository extends JpaRepository<Product, UUID> {
     @Query("SELECT p FROM Product p WHERE p.productCategory = :category")
-    Page<Product> findAllByProductCategory(@Param("category") ProductCategory category, Pageable pageable);
+    Page<Product> findAllByProductCategory(@Param("category") ProductDto.ProductCategory category, Pageable pageable);
 }

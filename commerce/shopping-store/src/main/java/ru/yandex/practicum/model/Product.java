@@ -1,6 +1,14 @@
 package ru.yandex.practicum.model;
 
 
+import jakarta.persistence.*;
+import lombok.*;
+import org.springframework.data.annotation.Id;
+import ru.yandex.practicum.shoppingStore.dto.ProductDto;
+import ru.yandex.practicum.shoppingStore.dto.SetProductQuantityStateRequest;
+
+import java.util.UUID;
+
 @Entity
 @Table(name = "products")
 @Getter
@@ -24,20 +32,22 @@ public class Product {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private QuantityState quantityState;
+    private SetProductQuantityStateRequest.QuantityState quantityState;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private ProductState productState;
+    private ProductDto.ProductState productState;
 
     @Column(nullable = false)
     private Double rating;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private ProductCategory productCategory;
+    private ProductDto.ProductCategory productCategory;
 
     @Column(nullable = false)
     private Double price;
+    @jakarta.persistence.Id
+    private Long id;
 
 }
