@@ -3,16 +3,16 @@ package ru.yandex.practicum.warehouse.dto;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.util.UUID;
+
 @Getter
 @Setter
 @NoArgsConstructor
-@FieldDefaults(level = AccessLevel.PRIVATE)
 @AllArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 @Builder
-public class AddressDto {
-     String country;
-     String city;
-     String street;
-     String house;
-     String flat;
+public class ShippedToDeliveryRequest {
+    UUID orderId;
+
+    UUID deliveryId;
 }

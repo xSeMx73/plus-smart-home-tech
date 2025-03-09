@@ -5,9 +5,13 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
+import ru.yandex.practicum.delivery.dto.AddressDto;
 import ru.yandex.practicum.service.WarehouseService;
 import ru.yandex.practicum.shoppingCart.dto.ShoppingCartDto;
-import ru.yandex.practicum.warehouse.dto.*;
+import ru.yandex.practicum.warehouse.dto.AddProductToWarehouseRequest;
+import ru.yandex.practicum.warehouse.dto.AssemblyProductForOrderFromShoppingCartRequest;
+import ru.yandex.practicum.warehouse.dto.BookedProductDto;
+import ru.yandex.practicum.warehouse.dto.NewProductInWarehouseRequest;
 
 import java.util.Map;
 import java.util.UUID;
